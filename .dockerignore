@@ -3,7 +3,6 @@ __pycache__
 *.pyc
 *.db
 ops_autopilot_checkpoints.db
-profiles
 tests
 docs
 .git
