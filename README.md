@@ -18,7 +18,7 @@ stack. See [Hero roadmap](#hero-roadmap) below.
 | RAG pipelines (ingest/chunk/embed, pgvector + Elasticsearch hybrid/re-rank) | ✅ | `rag/` (WS3/5) |
 | Text-to-SQL (schema grounding, safe exec, self-correct) | ✅ | `sqld/` (WS4) |
 | AgentOps observability (tracing, token cost, drift) + versioned registry | ✅ | `ops/` (WS6/8) |
-| CI/CD with eval gates + deploy `triagepath.memolabs.dev` + real pilot | To build | `.github/` (WS7/9) |
+| CI/CD with eval gates + deploy `triagepath.memolabs.dev` + real pilot | ✅ deploy live | `.github/` (WS7/9) |
 
 ## Features (core analysis engine, inherited)
 
