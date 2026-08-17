@@ -2,10 +2,21 @@
 
 from __future__ import annotations
 
+import pytest
+
 from sqld.executor import run_readonly
 from sqld.generator import MockSqlGenerator
 from sqld.pipeline import TextToSql
 from sqld.schema import fetch_schema, render_schema
+
+PG_DSN = "postgresql://memo@localhost:5432/blueowl_dev"
+
+
+@pytest.fixture(autouse=True)
+def _pg_env(monkeypatch):
+    # Other tests mutate DATABASE_URL (e.g. to sqlite); force Postgres so the
+    # sqld suite is hermetic.
+    monkeypatch.setenv("DATABASE_URL", PG_DSN)
 
 
 def test_executor_rejects_non_select():
@@ -33,3 +44,4 @@ def test_render_schema_is_compact():
     text = render_schema(schema)
     assert text.startswith("TABLE ")
     assert "users" in text.lower()
+
