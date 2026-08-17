@@ -6,7 +6,9 @@ set -e
 
 export PORT="${PORT:-3000}"
 export BACKEND_PORT="${BACKEND_PORT:-8001}"
-export HOSTNAME="${HOSTNAME:-127.0.0.1}"
+# Next.js standalone uses HOSTNAME as the bind address; force it to loopback so
+# nginx (127.0.0.1:3000) can always reach it, overriding any container-set hostname.
+export HOSTNAME="127.0.0.1"
 
 # Backend (FastAPI).
 uvicorn api:app --host 0.0.0.0 --port "$BACKEND_PORT" &
