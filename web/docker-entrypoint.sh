@@ -4,10 +4,11 @@
 #                    -> /       -> Next.js :3000 (standalone)
 set -e
 
-export PORT="${PORT:-3000}"
+# Next.js standalone uses PORT + HOSTNAME as its bind address. Force both so
+# it always listens on 127.0.0.1:3000 (reachable by nginx), overriding any
+# PORT/HOSTNAME Coolify injects (e.g. PORT=8000 from the exposed port).
+export PORT="3000"
 export BACKEND_PORT="${BACKEND_PORT:-8001}"
-# Next.js standalone uses HOSTNAME as the bind address; force it to loopback so
-# nginx (127.0.0.1:3000) can always reach it, overriding any container-set hostname.
 export HOSTNAME="127.0.0.1"
 
 # Backend (FastAPI).
