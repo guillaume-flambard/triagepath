@@ -39,11 +39,11 @@ COPY --from=web-builder /build/.next/standalone ./web-standalone/
 COPY --from=web-builder /build/.next/static ./web-standalone/.next/static
 COPY --from=web-builder /build/public ./web-standalone/public
 
-# Runtime: backend (uvicorn) on :8000, frontend standalone on :3000.
-# The frontend's next.config rewrites /api -> http://localhost:8000, so one
-# public port (3000) serves the whole app on a single domain.
-EXPOSE 3000
-ENV PORT=3000 HOSTNAME=0.0.0.0 API_TARGET=http://localhost:8000
+# Runtime: backend (uvicorn) on :8001, frontend standalone on :8000.
+# The frontend's next.config rewrites /api -> http://localhost:8001, and the
+# proxy serves the domain on :8000, so one public port serves the whole app.
+EXPOSE 8000
+ENV PORT=8000 HOSTNAME=0.0.0.0 API_TARGET=http://localhost:8001 BACKEND_PORT=8001
 COPY web/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

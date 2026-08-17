@@ -1,20 +1,21 @@
 #!/bin/sh
-# triagepath monolith entrypoint: run FastAPI backend (:8000) + Next.js
-# standalone (:3000, proxies /api to :8000) on one container / one domain.
-# POSIX sh: no bash-only features (dash on python:slim).
+# triagepath monolith entrypoint: run FastAPI backend + Next.js standalone
+# (which proxies /api to the backend) on one container / one domain.
+# The proxy serves the domain on PORT (8000, the frontend); the backend listens
+# on BACKEND_PORT (8001) and is only reachable from inside the container.
 set -e
 
-# Start the backend in the background.
-uvicorn api:app --host 0.0.0.0 --port 8000 &
+PORT="${PORT:-8000}"
+BACKEND_PORT="${BACKEND_PORT:-8001}"
+export PORT
+
+uvicorn api:app --host 0.0.0.0 --port "$BACKEND_PORT" &
 BACKEND_PID=$!
 
-# Run the frontend in the background too.
 node web-standalone/server.js &
 FRONTEND_PID=$!
 
-# Forward signals to both so the container shuts down cleanly.
 trap 'kill $BACKEND_PID $FRONTEND_PID 2>/dev/null || true' INT TERM
 
-# Wait for the frontend (primary). If it exits, tear down the backend too.
 wait $FRONTEND_PID
 kill $BACKEND_PID 2>/dev/null || true
