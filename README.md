@@ -12,10 +12,10 @@ stack. See [Hero roadmap](#hero-roadmap) below.
 
 | Layer | Status | Where |
 |---|---|---|
-| Python backend + React streaming frontend (SSE, reasoning transparency, escalation UI) | In progress | `web/` (WS1) |
+| Python backend + React streaming frontend (SSE, reasoning transparency, escalation UI) | ✅ | `web/` (WS1) |
 | Agentic orchestration (LangGraph multi-agent, human-in-loop, checkpoints) | ✅ inherited | `graph/`, `crew/` |
-| MCP servers (Postgres, Elasticsearch, company APIs) | To build | `mcp/` (WS2) |
-| RAG pipelines (ingest/chunk/embed/pgvector + Elasticsearch hybrid/re-rank) | To build | `rag/` (WS3/5) |
+| MCP servers (Postgres, Elasticsearch, company APIs) | ✅ | `mcp_servers/` (WS2) |
+| RAG pipelines (ingest/chunk/embed, pgvector + Elasticsearch hybrid/re-rank) | ✅ | `rag/` (WS3/5) |
 | Text-to-SQL (schema grounding, safe exec, self-correct) | To build | `sqld/` (WS4) |
 | AgentOps observability (tracing, token cost, drift) + versioned registry | To build | `ops/` (WS6/8) |
 | CI/CD with eval gates + deploy `triagepath.memolabs.dev` + real pilot | To build | `.github/` (WS7/9) |
