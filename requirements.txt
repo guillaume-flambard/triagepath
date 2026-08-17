@@ -38,10 +38,14 @@ python-dotenv==1.2.2
 fastapi==0.141.1
 uvicorn[standard]==0.52.1
 
+# MCP servers (mcp_servers/, WS2) - Model Context Protocol SDK
+mcp==2.0.0
+
 # Development & testing
 pytest==9.1.1
 pytest-cov==7.1.0
 coverage==7.15.3
+pytest-asyncio==1.4.0
 
 # ---------------------------------------------------------------------------
 # Future steps (not yet implemented - do NOT pin until the step lands):
