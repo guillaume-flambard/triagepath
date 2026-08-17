@@ -1,5 +1,5 @@
 [run]
-source = domain, graph, crew, llm, app, db
+source = domain, graph, crew, llm, app, db, api, api_stream
 omit = */tests/*
 
 [report]

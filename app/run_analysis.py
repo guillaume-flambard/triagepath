@@ -45,7 +45,7 @@ def build_runtime(
     provider: str = "mock",
     api_key: str = "",
     model: str = "llama-3.3-70b-versatile",
-    checkpoint_db: str = "ops_autopilot_checkpoints.db",
+    checkpoint_db: str = "triagepath_checkpoints.db",
     ollama_base_url: str = "http://localhost:11434",
 ) -> Runtime:
     """Build the graph with the right LLM clients.

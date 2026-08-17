@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     # App Configuration
     app_secret: str = Field(default="", description="Secret for session / password pepper (optional in dev)")
-    database_url: str = Field(default="sqlite:///./ops_autopilot.db", description="Database connection URL")
+    database_url: str = Field(default="sqlite:///./triagepath.db", description="Database connection URL")
     default_locale: str = Field(default="fr", description="Default locale (fr or en)")
 
     # LLM Provider Selection (mock works offline)

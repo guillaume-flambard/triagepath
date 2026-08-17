@@ -1,13 +1,13 @@
 # Deployment
 
-Design spec section 14: how to run Ops Autopilot in production for a
+Design spec section 14: how to run triagepath in production for a
 mono-team (the product's target). v1 deliberately avoids container
 orchestration and multi-tenant infrastructure.
 
 ## Local / dev
 
 - One command: `make run` (or `streamlit run ui/app.py`).
-- `ops_autopilot.db` (app tables) and `ops_autopilot_checkpoints.db`
+- `triagepath.db` (app tables) and `triagepath_checkpoints.db`
   (LangGraph checkpointer) are created on first run if missing.
 - `.env` needs `GROQ_API_KEY` for live LLM calls; without it the app runs
   in offline mock mode (`LLM_PROVIDER=mock`).
@@ -22,7 +22,7 @@ Python.
 
 ### Option A - Streamlit Cloud
 
-1. Push the repo to GitHub (it is public: `guillaume-flambard/ops-autopilot`).
+1. Push the repo to GitHub (it is public: `guillaume-flambard/triagepath`).
 2. In Streamlit Cloud, create a new app pointing at the repo, branch `main`,
    main file `ui/app.py`.
 3. Set the secrets in the app's dashboard (Settings > Secrets, TOML):
@@ -44,7 +44,7 @@ Python.
    restart — accounts and history are lost). For real persistence, point
    `DATABASE_URL` at a managed Postgres and add it to the secrets:
    ```toml
-   DATABASE_URL="postgresql+psycopg://user:pass@host:5432/ops_autopilot"
+   DATABASE_URL="postgresql+psycopg://user:pass@host:5432/triagepath"
    ```
    - The `psycopg[binary]` driver is already in `requirements.txt` (it ships
      cp314 wheels, so it installs on the Streamlit Cloud runtime). No app
@@ -69,8 +69,8 @@ cannot recur — on any host.
 
 Local run:
 ```bash
-docker build -t ops-autopilot .
-docker run -p 8501:8501 --env-file .env ops-autopilot
+docker build -t triagepath .
+docker run -p 8501:8501 --env-file .env triagepath
 # open http://localhost:8501
 ```
 
@@ -94,8 +94,8 @@ Set env vars/secrets in the host's dashboard, never in the image.
 ### Option B - VPS (single box)
 
 ```bash
-git clone https://github.com/guillaume-flambard/ops-autopilot.git /opt/ops-autopilot
-cd /opt/ops-autopilot
+git clone https://github.com/guillaume-flambard/triagepath.git /opt/triagepath
+cd /opt/triagepath
 uv venv && uv pip install --python .venv/bin/python -r requirements.txt
 cp .env.example .env   # fill in GROQ_API_KEY, APP_SECRET, LLM_PROVIDER=groq
 ```
@@ -104,14 +104,14 @@ Run behind a reverse proxy (Caddy/nginx) with a systemd unit:
 
 ```ini
 [Unit]
-Description=Ops Autopilot (Streamlit)
+Description=triagepath (Streamlit)
 After=network.target
 
 [Service]
-WorkingDirectory=/opt/ops-autopilot
-ExecStart=/opt/ops-autopilot/.venv/bin/streamlit run ui/app.py --server.port 8501 --server.address 127.0.0.1
+WorkingDirectory=/opt/triagepath
+ExecStart=/opt/triagepath/.venv/bin/streamlit run ui/app.py --server.port 8501 --server.address 127.0.0.1
 Restart=on-failure
-EnvironmentFile=/opt/ops-autopilot/.env
+EnvironmentFile=/opt/triagepath/.env
 
 [Install]
 WantedBy=multi-user.target
@@ -126,15 +126,15 @@ a daily `cron` + simple retention is enough:
 
 ```bash
 #!/usr/bin/env bash
-# /etc/cron.daily/ops-autopilot-backup
+# /etc/cron.daily/triagepath-backup
 set -eu
-DB_DIR=/opt/ops-autopilot/data
-BACKUP_DIR=/opt/ops-autopilot/backups
+DB_DIR=/opt/triagepath/data
+BACKUP_DIR=/opt/triagepath/backups
 mkdir -p "$BACKUP_DIR"
 timestamp=$(date +%F_%H%M)
 # sqlite3 .backup is crash-safe (consistent snapshot even while app writes)
-sqlite3 "$DB_DIR/ops_autopilot.db" ".backup '$BACKUP_DIR/app-$timestamp.db'"
-sqlite3 "$DB_DIR/ops_autopilot_checkpoints.db" ".backup '$BACKUP_DIR/checkpoints-$timestamp.db'"
+sqlite3 "$DB_DIR/triagepath.db" ".backup '$BACKUP_DIR/app-$timestamp.db'"
+sqlite3 "$DB_DIR/triagepath_checkpoints.db" ".backup '$BACKUP_DIR/checkpoints-$timestamp.db'"
 # keep 14 days
 find "$BACKUP_DIR" -name '*.db' -mtime +14 -delete
 ```
@@ -154,7 +154,7 @@ explicit `url`, so switching is a configuration change.
    alembic init migrations
    ```
 2. Point `DATABASE_URL` at Postgres, e.g.
-   `postgresql+psycopg2://user:pass@host:5432/ops_autopilot`.
+   `postgresql+psycopg2://user:pass@host:5432/triagepath`.
 3. Two extra concerns on Postgres:
    - the LangGraph checkpointer currently defaults to a local SQLite file
      (`db/repo.py:checkpoint_db_path`); on Postgres point `CHECKPOINT_DB`

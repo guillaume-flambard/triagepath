@@ -23,4 +23,5 @@ jobs:
         run: |
           uv run pytest -q \
             --cov=domain --cov=graph --cov=crew --cov=llm --cov=app --cov=db \
+            --cov=api --cov=api_stream \
             --cov-report=term-missing --cov-fail-under=75

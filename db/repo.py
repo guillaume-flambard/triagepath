@@ -75,7 +75,7 @@ def _resolve_sqlite_path(url: str) -> str:
     """Return a writable SQLite path for a ``sqlite:///`` URL.
 
     On Streamlit Cloud the working directory is read-only (``/mount/src/...``),
-    so a relative path like ``./ops_autopilot.db`` cannot be written and
+    so a relative path like ``./triagepath.db`` cannot be written and
     account creation fails. If the target directory is not writable, fall back
     to a per-run temp dir (still writable). Local dev keeps its default file.
     Non-SQLite URLs (e.g. Postgres) are returned unchanged. The resolution is
@@ -90,7 +90,7 @@ def _resolve_sqlite_path(url: str) -> str:
         # Empty path and in-memory DBs must never be rewritten to a file.
         _sqlite_path_cache[url] = url
         return url
-    resolved_path = _writable_file(path, "ops_autopilot.db")
+    resolved_path = _writable_file(path, "triagepath.db")
     resolved = url if resolved_path == path else "sqlite:///" + resolved_path
     _sqlite_path_cache[url] = resolved
     return resolved
@@ -265,4 +265,4 @@ def checkpoint_db_path() -> str:
     if url.startswith("sqlite:///"):
         return url[len("sqlite:///") :]
     # Non-sqlite backend: keep checkpoints in a writable local file.
-    return _writable_file(os.getenv("CHECKPOINT_DB") or "ops_autopilot_checkpoints.db", "ops_autopilot_checkpoints.db")
+    return _writable_file(os.getenv("CHECKPOINT_DB") or "triagepath_checkpoints.db", "triagepath_checkpoints.db")

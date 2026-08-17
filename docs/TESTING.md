@@ -1,4 +1,4 @@
-# Guide de test - Ops Autopilot
+# Guide de test - triagepath
 
 Pour tester l'app en 5 minutes, sans config, avec le compte de démo deja cree.
 
@@ -95,7 +95,7 @@ reste testable.
 ## Lancer l'app soi-meme
 
 ```bash
-cd ~/projects/ops-autopilot
+cd ~/projects/triagepath
 make run        # mode ollama (local) si LLM_PROVIDER=ollama dans .env
 ```
 
@@ -112,7 +112,7 @@ cle est configuree dans `.env`.
 ## CLI (sans UI)
 
 ```bash
-cd ~/projects/ops-autopilot
+cd ~/projects/triagepath
 make demo       # arc demo offline, mock LLM, preset lumea
 .venv/bin/python -m graph.cli run --preset lumea --non-interactive
 .venv/bin/python -m graph.cli run --llm-provider ollama --preset lumea

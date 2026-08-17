@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- triagepath — Variant 06 "Priority Lanes": three lanes, top one is the prioritized route -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- top priority lane, accented and bold, with directional arrowhead -->
+    <path d="M14 30 C 34 30, 46 30, 70 30" stroke="#C58A3C" stroke-width="5"/>
+    <path d="M70 24 L 82 30 L 70 36" stroke="#C58A3C" stroke-width="5" fill="none" stroke-linejoin="round"/>
+    <!-- middle lane, plain -->
+    <path d="M14 50 C 40 50, 60 50, 82 50" stroke="#111418" stroke-width="3" opacity="0.6"/>
+    <!-- lower lane, faint -->
+    <path d="M14 70 C 40 70, 60 70, 82 70" stroke="#111418" stroke-width="3" opacity="0.25"/>
+    <!-- source node -->
+    <circle cx="12" cy="30" r="3.5" fill="#111418" stroke="none"/>
+  </g>
+</svg>

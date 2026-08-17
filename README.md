@@ -1,6 +1,26 @@
-# Ops Autopilot
+# triagepath
 
-An assistant that analyzes a brand's operations, quantifies where time and money go, and recommends *what to automate first* - with a concrete implementation plan and estimated ROI.
+> Agentic operations + knowledge copilot. It analyzes a brand's operations, quantifies where
+> time and money go, recommends *what to automate first* (concrete plan + ROI), and answers
+> natural-language questions over the business's own data (docs, SQL, Elasticsearch).
+
+Formerly **Ops Autopilot** (renamed 2026-08-17). Public hero project for the **Accenture Full
+Stack AI Developer** role: a single deployed, production-grade repo covering the whole requested
+stack. See [Hero roadmap](#hero-roadmap) below.
+
+## Hero roadmap
+
+| Layer | Status | Where |
+|---|---|---|
+| Python backend + React streaming frontend (SSE, reasoning transparency, escalation UI) | In progress | `web/` (WS1) |
+| Agentic orchestration (LangGraph multi-agent, human-in-loop, checkpoints) | ✅ inherited | `graph/`, `crew/` |
+| MCP servers (Postgres, Elasticsearch, company APIs) | To build | `mcp/` (WS2) |
+| RAG pipelines (ingest/chunk/embed/pgvector + Elasticsearch hybrid/re-rank) | To build | `rag/` (WS3/5) |
+| Text-to-SQL (schema grounding, safe exec, self-correct) | To build | `sqld/` (WS4) |
+| AgentOps observability (tracing, token cost, drift) + versioned registry | To build | `ops/` (WS6/8) |
+| CI/CD with eval gates + deploy `triagepath.memolabs.dev` + real pilot | To build | `.github/` (WS7/9) |
+
+## Features (core analysis engine, inherited)
 
 ## Features
 
@@ -34,7 +54,7 @@ Optional variables (defaults shown):
 - `OLLAMA_MODEL=qwen2.5:3b`
 - `GROQ_API_KEY` (optional; enables the groq option in the provider list)
 - `GROQ_MODEL=llama-3.3-70b-versatile`
-- `DATABASE_URL=sqlite:///./ops_autopilot.db`
+- `DATABASE_URL=sqlite:///./triagepath.db`
 - `DEFAULT_LOCALE=fr`
 
 ### 2. Run the Application
@@ -54,7 +74,7 @@ make reset  # wipe local SQLite DBs (app + checkpoints)
 .venv/bin/python -m graph.cli run --llm-provider ollama --url https://www.glossier.com --non-interactive
 ```
 Each run pauses at the human review (`a`/`m`/`r`), persists state to
-`ops_autopilot_checkpoints.db` (`--checkpoint-db` to change), and resumes the same
+`triagepath_checkpoints.db` (`--checkpoint-db` to change), and resumes the same
 thread via LangGraph's `interrupt` / `Command(resume=...)`. Use `--groq-api-key` /
 `--groq-model` to enable live Groq calls, or set `LLM_PROVIDER=ollama` for the
 local Ollama model (see `graph/cli.py` flags).
@@ -66,13 +86,13 @@ make run   # or: .venv/bin/streamlit run ui/app.py
 Register/login (email/password, bcrypt-hashed) → input form (preset or custom
 brand + assumptions) → live timeline → human review (Approver / Modifier /
 Rejeter) → final report, persisted to SQLite and listed on the Historique page.
-Checkpoints persist in `ops_autopilot_checkpoints.db`, so a page refresh resumes
+Checkpoints persist in `triagepath_checkpoints.db`, so a page refresh resumes
 the same thread.
 
 ## Architecture
 
 ```
-ops-autopilot/
+triagepath/
   domain/           # Pure business rules (no LangGraph / CrewAI / Streamlit)
     models.py       # Brand, Task, Score, Recommendation, Assumptions
     scoring.py      # ROI formulas - unit-testable without LLM

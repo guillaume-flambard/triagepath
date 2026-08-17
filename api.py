@@ -14,9 +14,11 @@ from pydantic import BaseModel, Field
 
 from app.presets import load_preset
 from app.run_analysis import analyze_website, build_runtime, run_analysis
+from api_stream import router as streaming_router
 from domain.models import Assumptions, BrandProfile, Sector
 
-app = FastAPI(title="Ops Autopilot API", version="0.1.0")
+app = FastAPI(title="triagepath API", version="0.1.0")
+app.include_router(streaming_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,14 +53,14 @@ def _runtime(req: AnalysisRequest):
         provider=req.llm_provider,
         api_key=os.environ.get("GROQ_API_KEY", ""),
         model=req.model,
-        checkpoint_db=os.environ.get("CHECKPOINT_DB", "ops_autopilot_checkpoints.db"),
+        checkpoint_db=os.environ.get("CHECKPOINT_DB", "triagepath_checkpoints.db"),
         ollama_base_url=os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434"),
     )
 
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "service": "ops-autopilot"}
+    return {"status": "ok", "service": "triagepath"}
 
 
 @app.post("/analyze", response_model=AnalysisResponse)

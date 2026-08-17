@@ -104,7 +104,7 @@ def test_checkpoint_db_path_uses_database_url(monkeypatch, tmp_path) -> None:
     assert checkpoint_db_path() == str(tmp_path / "app.db")
     monkeypatch.setenv("DATABASE_URL", "postgresql://user:pw@host/db")
     monkeypatch.delenv("CHECKPOINT_DB", raising=False)
-    assert checkpoint_db_path() == "ops_autopilot_checkpoints.db"
+    assert checkpoint_db_path() == "triagepath_checkpoints.db"
 
 
 def test_postgres_database_url_passes_through(monkeypatch) -> None:

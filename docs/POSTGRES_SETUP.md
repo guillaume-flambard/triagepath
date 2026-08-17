@@ -1,6 +1,6 @@
 # Guide — brancher un Postgres persistant (bout en bout)
 
-Ce guide connecte Ops Autopilot à une base **Postgres managée** pour que les
+Ce guide connecte triagepath à une base **Postgres managée** pour que les
 comptes et l'historique **survivent aux redéploiements** de Streamlit Cloud.
 
 > Pourquoi : sur Streamlit Cloud le conteneur est éphémère et le dossier de

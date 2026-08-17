@@ -139,7 +139,7 @@ def main(argv=None) -> int:
     run_p.add_argument("--groq-model", default="llama-3.3-70b-versatile")
     run_p.add_argument("--ollama-base-url", default="http://localhost:11434")
     run_p.add_argument("--ollama-model", default="qwen2.5:3b")
-    run_p.add_argument("--checkpoint-db", default="ops_autopilot_checkpoints.db")
+    run_p.add_argument("--checkpoint-db", default="triagepath_checkpoints.db")
     run_p.set_defaults(func=run)
 
     args = parser.parse_args(argv)

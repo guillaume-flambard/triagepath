@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>triagepath — Logo variants</title>
+<style>
+  :root{
+    --ink:#111418;
+    --accent:#C58A3C;
+    --paper:#FAF9F6;
+    --muted:#6b7280;
+    --line:#e5e2da;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{padding:56px 32px 24px;max-width:1080px;margin:0 auto}
+  header h1{font-size:28px;font-weight:700;letter-spacing:-0.02em}
+  header .sub{color:var(--muted);margin-top:6px;font-size:15px;max-width:640px}
+  .grid{max-width:1080px;margin:0 auto;padding:8px 32px 64px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    transition:transform .15s ease, box-shadow .15s ease;cursor:pointer;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(17,20,24,.08)}
+  .card.selected{outline:3px solid var(--accent);outline-offset:2px}
+  .stage{display:flex;align-items:center;justify-content:center;height:220px;background:
+    repeating-conic-gradient(#ffffff 0% 25%, #f7f5f0 0% 50%) 0 0/22px 22px}
+  .stage svg{width:120px;height:120px}
+  .meta{padding:16px 18px;border-top:1px solid var(--line)}
+  .meta .tag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .meta h3{font-size:16px;font-weight:600;margin:4px 0 4px}
+  .meta p{font-size:13px;color:var(--muted)}
+  .cta{max-width:1080px;margin:0 auto;padding:0 32px 56px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .cta button{
+    border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:14px;font-weight:600;
+    padding:11px 22px;border-radius:10px;cursor:pointer;transition:opacity .15s;
+  }
+  .cta button:hover{opacity:.85}
+  .cta .hint{color:var(--muted);font-size:13px}
+  footer{max-width:1080px;margin:0 auto;padding:0 32px 48px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>triagepath — variantes de logo</h1>
+  <p class="sub">Copilote agentique d'opérations et de connaissance : trier ce qui mérite l'attention, puis tracer le chemin d'action. Choisis une variante (clique pour sélectionner).</p>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<div class="cta">
+  <button id="pick">Valider cette variante</button>
+  <span class="hint" id="sel">Aucune sélectionnée</span>
+</div>
+
+<footer>Généré le 2026-08-17 · assets dans brand/variants/ · palette: ink #111418 + accent #C58A3C</footer>
+
+<script>
+const variants = [
+  {file:"01-path-fork", tag:"Fork", title:"Path Fork",
+   svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 80 C 40 80, 44 66, 50 50" stroke="#111418" stroke-width="5"/><path d="M50 50 C 56 34, 62 28, 78 24" stroke="#C58A3C" stroke-width="5"/><path d="M50 50 C 58 62, 66 66, 78 66" stroke="#111418" stroke-width="3" stroke-dasharray="1 6" stroke-linecap="round" opacity="0.45"/><circle cx="50" cy="50" r="4" fill="#C58A3C" stroke="none"/><circle cx="80" cy="24" r="3.5" fill="#111418" stroke="none"/></g></svg>`,
+   why:"La route se divise, une branche recommandée en accent. Le tri qui mène au chemin choisi."},
+  {file:"02-sort-lane", tag:"Sort", title:"Sort Lane",
+   svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26 C 30 30, 36 40, 42 50" stroke="#111418" stroke-width="3"/><path d="M14 50 C 28 50, 34 50, 40 50" stroke="#111418" stroke-width="3" opacity="0.55"/><path d="M14 74 C 30 70, 36 60, 42 50" stroke="#111418" stroke-width="3" opacity="0.55"/><path d="M42 50 C 56 50, 66 44, 78 40" stroke="#C58A3C" stroke-width="5"/><circle cx="42" cy="50" r="4.5" fill="#111418" stroke="none"/><circle cx="80" cy="40" r="3.5" fill="#C58A3C" stroke="none"/></g></svg>`,
+   why:"Plusieurs voies convergent vers un seul chemin. Le tri (triage) qui débouche sur une action unique."},
+  {file:"03-t-waypoint", tag:"T", title:"T Waypoint",
+   svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 30 H 78" stroke="#111418" stroke-width="6"/><path d="M50 30 V 74" stroke="#111418" stroke-width="6"/><path d="M14 78 C 30 78, 34 62, 50 56 C 62 51, 70 48, 82 44" stroke="#C58A3C" stroke-width="4"/><circle cx="50" cy="30" r="5" fill="#C58A3C" stroke="none"/><circle cx="84" cy="44" r="3" fill="#111418" stroke="none"/></g></svg>`,
+   why:"La lettre T (triagepath) traversée par une route. Le point de décision au cœur de la marque."},
+  {file:"04-bifurcation", tag:"Split", title:"Bifurcation",
+   svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M50 18 V 48" stroke="#111418" stroke-width="5"/><path d="M50 48 C 56 66, 64 74, 80 78" stroke="#C58A3C" stroke-width="5"/><path d="M50 48 C 42 64, 34 70, 22 74" stroke="#111418" stroke-width="3" stroke-dasharray="1 6" opacity="0.4"/><circle cx="50" cy="48" r="4.5" fill="#111418" stroke="none"/><circle cx="82" cy="78" r="3.5" fill="#C58A3C" stroke="none"/></g></svg>`,
+   why:"Une ligne nette qui bifurque : l'alternative en pointillés, la recommandation pleine et accentuée."},
+  {file:"05-route-dots", tag:"Flow", title:"Route Dots",
+   svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22 C 30 26, 36 40, 40 50" stroke="#111418" stroke-width="2.5" stroke-dasharray="1 5" opacity="0.5"/><path d="M16 50 C 28 50, 34 50, 40 50" stroke="#111418" stroke-width="2.5" stroke-dasharray="1 5" opacity="0.5"/><path d="M16 78 C 30 74, 36 60, 40 50" stroke="#111418" stroke-width="2.5" stroke-dasharray="1 5" opacity="0.5"/><path d="M40 50 C 56 50, 68 40, 82 34" stroke="#C58A3C" stroke-width="4.5"/><circle cx="40" cy="50" r="4.5" fill="#111418" stroke="none"/><circle cx="84" cy="34" r="3.5" fill="#C58A3C" stroke="none"/></g></svg>`,
+   why:"Des routes en pointillés (données, flux) convergent vers un chemin plein. Le flux agentique."},
+  {file:"06-priority-lanes", tag:"Priority", title:"Priority Lanes",
+   svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 30 C 34 30, 46 30, 70 30" stroke="#C58A3C" stroke-width="5"/><path d="M70 24 L 82 30 L 70 36" stroke="#C58A3C" stroke-width="5" fill="none" stroke-linejoin="round"/><path d="M14 50 C 40 50, 60 50, 82 50" stroke="#111418" stroke-width="3" opacity="0.6"/><path d="M14 70 C 40 70, 60 70, 82 70" stroke="#111418" stroke-width="3" opacity="0.25"/><circle cx="12" cy="30" r="3.5" fill="#111418" stroke="none"/></g></svg>`,
+   why:"Trois couloirs, celui du haut prioritaire et fléché. La priorité qui trace la route."},
+];
+
+const grid = document.getElementById("grid");
+let selected = null;
+
+variants.forEach((v,i)=>{
+  const card = document.createElement("div");
+  card.className = "card";
+  card.dataset.i = i;
+  card.innerHTML = `
+    <div class="stage">${v.svg}</div>
+    <div class="meta">
+      <div class="tag">${v.tag}</div>
+      <h3>${v.title}</h3>
+      <p>${v.why}</p>
+    </div>`;
+  card.addEventListener("click",()=>{
+    document.querySelectorAll(".card").forEach(c=>c.classList.remove("selected"));
+    card.classList.add("selected");
+    selected = v.file;
+    document.getElementById("sel").textContent = "Sélectionnée : " + v.title;
+  });
+  grid.appendChild(card);
+});
+
+document.getElementById("pick").addEventListener("click",()=>{
+  if(!selected){ alert("Clique d'abord sur une variante."); return; }
+  document.getElementById("sel").textContent = "✓ " + selected + " retenue. Précise le choix à Guillaume.";
+});
+</script>
+</body>
+</html>
