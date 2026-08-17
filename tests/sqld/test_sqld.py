@@ -13,9 +13,9 @@ PG_DSN = "postgresql://memo@localhost:5432/blueowl_dev"
 
 
 @pytest.fixture(autouse=True)
-def _pg_env(monkeypatch):
-    # Other tests mutate DATABASE_URL (e.g. to sqlite); force Postgres so the
-    # sqld suite is hermetic.
+def _pg_env(monkeypatch, require_postgres):
+    # require_postgres: skip when no local Postgres (CI). Then force the DSN so
+    # the suite is hermetic against other tests that mutate DATABASE_URL.
     monkeypatch.setenv("DATABASE_URL", PG_DSN)
 
 

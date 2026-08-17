@@ -24,4 +24,28 @@ jobs:
           uv run pytest -q \
             --cov=domain --cov=graph --cov=crew --cov=llm --cov=app --cov=db \
             --cov=api --cov=api_stream \
+            --cov=rag --cov=sqld --cov=ops --cov=mcp_servers \
             --cov-report=term-missing --cov-fail-under=75
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build

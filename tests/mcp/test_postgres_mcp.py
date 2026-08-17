@@ -35,6 +35,6 @@ def test_run_query_rejects_insert():
     assert "read-only" in text
 
 
-def test_run_query_allows_select():
+def test_run_query_allows_select(require_postgres):
     text = _call("run_query", {"sql": "SELECT 1 AS one"})
     assert "1" in text
