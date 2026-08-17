@@ -17,9 +17,9 @@ FROM python:3.12-slim AS runtime
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 WORKDIR /app
 
-# System deps (Node 20 for the Next standalone server, build tools for wheels).
+# System deps (Node 20 for the Next standalone server, nginx reverse proxy).
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl ca-certificates gnupg build-essential \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg nginx build-essential \
     && mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
@@ -39,11 +39,12 @@ COPY --from=web-builder /build/.next/standalone ./web-standalone/
 COPY --from=web-builder /build/.next/static ./web-standalone/.next/static
 COPY --from=web-builder /build/public ./web-standalone/public
 
-# Runtime: backend (uvicorn) on :8001, frontend standalone on :8000.
-# The frontend's next.config rewrites /api -> http://localhost:8001, and the
-# proxy serves the domain on :8000, so one public port serves the whole app.
+# Runtime: nginx (:8000) proxies /api -> uvicorn (:8001, streaming) and
+# everything else -> Next.js standalone (:3000). One public port, one domain,
+# and SSE keeps flowing because nginx buffering is off for /api.
+COPY web/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 8000
-ENV PORT=8000 HOSTNAME=0.0.0.0 API_TARGET=http://localhost:8001 BACKEND_PORT=8001
+ENV BACKEND_PORT=8001 HOSTNAME=127.0.0.1
 COPY web/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
