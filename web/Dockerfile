@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ===== Frontend build stage (Next.js standalone) =====
-FROM node:20-alpine AS web-builder
+FROM node:24-alpine AS web-builder
 WORKDIR /build
 COPY web/package.json web/package-lock.json ./
 RUN npm ci
@@ -17,11 +17,11 @@ FROM python:3.12-slim AS runtime
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 WORKDIR /app
 
-# System deps (Node 20 for the Next standalone server, nginx reverse proxy).
+# System deps (Node 24 for the Next standalone server, nginx reverse proxy).
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates gnupg nginx build-essential \
     && mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
 
